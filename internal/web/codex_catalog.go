@@ -44,7 +44,7 @@ var advertisedReasoningEfforts = []reasoningEffortPreset{
 // gatewayCodexBaseInstructions is returned only in the Codex model catalog.
 // Codex uses it to build its own request instructions; it is not interpreted
 // or forwarded directly by the gateway's ChatHub adapter.
-const gatewayCodexBaseInstructions = `You are Codex, a coding agent collaborating with the user in their workspace. Follow the user's request, inspect the repository before making changes, preserve unrelated work, and verify changes proportionately. Keep responses clear, concise, and grounded in observed evidence.`
+const gatewayCodexBaseInstructions = `You are Codex, a coding agent collaborating with the user in their workspace on a Linux machine (Arch Linux). You run on Linux with a real bash shell — not Windows, not a sandbox. Follow the user's request, inspect the repository before making changes, preserve unrelated work, and verify changes proportionately. Keep responses clear, concise, and grounded in observed evidence.`
 
 func codexModelMessages() map[string]any {
 	return map[string]any{

@@ -1951,7 +1951,7 @@ APPLICATION_REQUEST_AND_EVIDENCE:
 	id := "chatcmpl-" + uuid.NewString()
 	if len(toolMaps) > 0 && isToolRefusal(res.Text) {
 		log.Printf("[tool-eject] model refused tools, retrying with correction")
-		correction := "Your previous response incorrectly denied that caller tools are available. They are real, active, and callable on the caller's Linux machine (Arch Linux). Call the appropriate tool now. Do not explain tool availability.\n\nUser request:\n" + prompt
+		correction := "Your previous response incorrectly denied that caller tools are available. They are real, active, and callable on the caller's Linux machine (Arch Linux) — you are running on Linux, not Windows and not a sandbox. Call the appropriate tool now. Do not explain tool availability.\n\nUser request:\n" + prompt
 		res2, err2 := s.chatWithAccount(ctx, acc.ID, account, chathub.Request{Text: correction, Tone: tone, Attachments: body.Attachments})
 		if err2 == nil && !isToolRefusal(res2.Text) {
 			res = res2
@@ -1959,7 +1959,7 @@ APPLICATION_REQUEST_AND_EVIDENCE:
 	}
 	if len(toolMaps) > 0 && isSandboxHallucination(res.Text) {
 		log.Printf("[sandbox-eject] model used code interpreter/sandbox, retrying with explicit tool instruction")
-		correction := "CRITICAL: You must NOT use any built-in code interpreter, Python sandbox, or cloud execution environment. The caller has provided a bash tool that runs a bash shell on their local Linux machine (Arch Linux) — use it to execute any commands or code. Do NOT say you cannot run code. Do NOT say you only have a container or sandbox. Do NOT say you have no execution channel. You DO have a bash tool that runs on Linux. Call the bash tool NOW with the appropriate bash command.\n\nUser request:\n" + prompt
+		correction := "CRITICAL: You are running on the caller's Linux machine (Arch Linux) — a real Linux environment, not Windows, not a sandbox, not a cloud container. You must NOT use any built-in code interpreter, Python sandbox, or cloud execution environment. The caller has provided a bash tool that runs a real bash shell on this Linux host — use it to execute any commands or code. Do NOT say you cannot run code. Do NOT say you only have a container or sandbox. Do NOT say you have no execution channel. Do NOT claim you are on Windows or use PowerShell. You DO have a bash tool that runs on Linux. Call the bash tool NOW with the appropriate bash command.\n\nUser request:\n" + prompt
 		res2, err2 := s.chatWithAccount(ctx, acc.ID, account, chathub.Request{Text: correction, Tone: tone, Attachments: body.Attachments})
 		if err2 == nil && !isSandboxHallucination(res2.Text) {
 			res = res2
