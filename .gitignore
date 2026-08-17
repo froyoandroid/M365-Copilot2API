@@ -46,6 +46,13 @@ server-error.log
 # Local agent memory (machine-specific notes)
 AGENTS.md
 
+# Local Go toolchain (machine-specific download)
+.toolchain/
+
+# Local deployment artifacts (machine-specific)
+deploy/
+scripts/m365-copilot2api-update.sh
+
 # WIP build during this session
 /m365-copilot2api.new*
 
